@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Bet - Page 127 Translation</title>
+    <style>
+        /* কালার থিম ও ভেরিয়েবল */
+        :root {
+            --primary-color: #2e6b45;
+            --accent-color: #eaf3ed;
+            --bg-gradient: linear-gradient(180deg, #eef5f0 0%, #fdfdfd 100%);
+            --text-main: #1a2a20;
+            --text-muted: #3a5444;
+            --card-shadow: 0 8px 25px rgba(46, 107, 69, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            overflow-x: hidden;
+            background-attachment: fixed;
+        }
+
+        /* ওয়েলকাম স্ক্রিন */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(238, 245, 240, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .welcome-title {
+            font-size: 38px;
+            font-family: 'Georgia', serif;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #2e6b45 20%, #52a865 40%, #52a865 60%, #2e6b45 80%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            animation: shineSweep 3s linear infinite, popIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            animation: fadeUp 1.2s ease forwards;
+        }
+
+        .start-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(46, 107, 69, 0.3);
+            cursor: pointer;
+            animation: pulseBtn 2s infinite;
+        }
+
+        /* মূল কনটেন্ট */
+        #main-content {
+            display: none;
+            padding: 20px 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: contentFadeIn 1s ease forwards;
+            padding-bottom: 50px;
+        }
+
+        /* হেডার */
+        .page-header {
+            background: white;
+            padding: 25px 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            border-top: 5px solid var(--primary-color);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.8s ease forwards 0.3s;
+        }
+
+        .story-name {
+            font-size: 28px;
+            color: var(--primary-color);
+            font-weight: 800;
+            font-family: 'Georgia', serif;
+            margin-bottom: 5px;
+            animation: textGlow 3s infinite alternate;
+        }
+
+        .page-info {
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+            background: var(--primary-color);
+            display: inline-block;
+            padding: 4px 15px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        .excerpt-info {
+            font-size: 14px;
+            color: #666;
+            background: var(--accent-color);
+            padding: 8px;
+            border-radius: 10px;
+            font-style: italic;
+        }
+
+        /* কার্ড ডিজাইন */
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            border-left: 6px solid var(--primary-color);
+            opacity: 0; 
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ভাসমান ব্যাজ */
+        .number-badge {
+            background: var(--accent-color);
+            color: var(--primary-color);
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: inline-block;
+            animation: floatBadge 3s infinite ease-in-out;
+        }
+
+        /* ইংরেজি টেক্সট শাইনিং */
+        .english-text {
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-family: 'Georgia', serif;
+            line-height: 1.4;
+            background: linear-gradient(120deg, #122116 0%, #122116 40%, #3e8e58 50%, #122116 60%, #122116 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            animation: shineSweep 4s linear infinite;
+        }
+
+        .bengali-meaning {
+            font-size: 17px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        /* উচ্চারণ বক্স এবং মুভিং লাইন অ্যানিমেশন */
+        .pronunciation {
+            font-size: 15px;
+            color: var(--primary-color);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #dcedc8;
+            background-color: #f7fbf8;
+            line-height: 1.4;
+            display: block;
+            position: relative; 
+            overflow: hidden; 
+        }
+
+        /* মুভিং লাইনের (দাগের) ডিজাইন */
+        .pronunciation::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            animation: movingLine 2.5s infinite linear;
+        }
+
+        .label {
+            font-weight: 800;
+            animation: colorPulse 3s infinite alternate;
+        }
+
+        /* গুরুত্বপূর্ণ শব্দের অর্থ */
+        .vocabulary-section {
+            background: white;
+            border: 2px dashed var(--primary-color);
+            padding: 25px 20px;
+            border-radius: 20px;
+            margin-top: 40px;
+            box-shadow: var(--card-shadow);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .vocabulary-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .vocab-title {
+            font-size: 22px;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            background: linear-gradient(to right, #2e6b45, #122116, #2e6b45);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            animation: shineSweep 4s linear infinite;
+        }
+
+        .vocab-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .vocab-list li {
+            background: var(--accent-color);
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            color: var(--text-muted);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .vocab-word {
+            font-weight: bold;
+            font-size: 17px;
+            animation: colorPulse 3s infinite alternate;
+        }
+
+        /* =========================================
+           অটোমেটিক অ্যানিমেশন কিফ্রেম (Keyframes)
+           ========================================= */
+        
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeUp {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes slideUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes contentFadeIn {
+            to { opacity: 1; }
+        }
+        @keyframes pulseBtn {
+            0% { box-shadow: 0 0 0 0 rgba(46, 107, 69, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(46, 107, 69, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 107, 69, 0); }
+        }
+        @keyframes shineSweep {
+            to { background-position: 200% center; }
+        }
+        @keyframes movingLine {
+            0% { left: -100%; opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { left: 100%; opacity: 0; }
+        }
+        @keyframes colorPulse {
+            0% { color: var(--primary-color); text-shadow: 0 0 0px rgba(46,107,69,0); }
+            100% { color: #163d25; text-shadow: 0 0 8px rgba(46,107,69,0.3); }
+        }
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 2px rgba(46,107,69,0.1); }
+            100% { text-shadow: 0 0 12px rgba(46,107,69,0.5); }
+        }
+        @keyframes floatBadge {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ওয়েলকাম স্ক্রিন -->
+    <div id="welcome-screen">
+        <h1 class="welcome-title">The Bet</h1>
+        <p class="welcome-subtitle">English to Bengali Translation<br>Interactive Mobile Experience</p>
+        <button class="start-btn" onclick="startReading()">পড়া শুরু করুন ✨</button>
+    </div>
+
+    <!-- মূল কনটেন্ট -->
+    <div id="main-content">
+        
+        <!-- হেডার অংশ -->
+        <div class="page-header">
+            <div class="story-name">The Bet</div>
+            <div class="page-info">📖 Page Number: 127</div>
+            <div class="excerpt-info">
+                "At the table..." ➔ "...things of the world."
+            </div>
+        </div>
+
+        <!-- কার্ডসমূহ -->
+        <div class="card">
+            <div class="number-badge">#1</div>
+            <div class="english-text">"At the table a man unlike ordinary people was sitting motionless."</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> টেবিলের সামনে একজন অদ্ভুত লোক একদম নিথর হয়ে বসে আছে।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> অ্যাট দ্য টেবিল আ ম্যান আনলাইক অর্ডিনারি পিপল ওয়াজ সিটিং মোশনলেস।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#2</div>
+            <div class="english-text">"He was a skeleton with the skin drawn tight over his bones, with long curls like a woman's and a shaggy beard."</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> সে যেন একটা কঙ্কাল — চামড়া হাড়ের সাথে লেগে গেছে, মাথায় মেয়েদের মতো লম্বা চুল, মুখে এলোমেলো দাড়ি।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> হি ওয়াজ আ স্কেলেটন উইথ দ্য স্কিন ড্রন টাইট ওভার হিজ বোনস, উইথ লং কার্লস লাইক আ ওম্যানস অ্যান্ড আ শ্যাগি বিয়ার্ড।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#3</div>
+            <div class="english-text">"His face was yellow with an earthy tint in it, his cheeks were hollow, his back long and narrow,"</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> তার মুখ হলদেটে মাটির মতো রঙ, গাল দুটো ভেতরে ঢুকে গেছে, পিঠ লম্বা আর সরু।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> হিজ ফেস ওয়াজ ইয়েলো উইথ অ্যান আর্থি টিন্ট ইন ইট, হিজ চিকস ওয়্যার হলো, হিজ ব্যাক লং অ্যান্ড ন্যারো।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#4</div>
+            <div class="english-text">"and the hand on which his shaggy head was propped was so thin and delicate that it was dreadful to look at it."</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> আর যে হাতের উপর সে মাথা ঠেকিয়ে রেখেছিল, সেই হাতটা এতটাই রোগা যে দেখতেই ভয় লাগছিল।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> অ্যান্ড দ্য হ্যান্ড অন হুইচ হিজ শ্যাগি হেড ওয়াজ প্রপড ওয়াজ সো থিন অ্যান্ড ডেলিকেট দ্যাট ইট ওয়াজ ড্রেডফুল টু লুক অ্যাট ইট।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#5</div>
+            <div class="english-text">"His hair was already streaked with silver,"</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> তার চুলে ইতিমধ্যেই পাক ধরে গেছে।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> হিজ হেয়ার ওয়াজ অলরেডি স্ট্রিকড উইথ সিলভার।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#6</div>
+            <div class="english-text">"and seeing his emaciated, aged-looking face, no one would have believed that he was only forty."</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> তার শুকনো বুড়িয়ে যাওয়া চেহারা দেখলে কেউ বিশ্বাসই করত না যে তার বয়স মাত্র চল্লিশ।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> অ্যান্ড সিয়িং হিজ ইমেশিয়েটেড, এজড-লুকিং ফেস, নো ওয়ান উড হ্যাভ বিলিভড দ্যাট হি ওয়াজ অনলি ফোর্টি।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#7</div>
+            <div class="english-text">"He was asleep...."</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> সে ঘুমিয়ে পড়েছিল।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> হি ওয়াজ অ্যাসলিপ।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#8</div>
+            <div class="english-text">"In front of his bowed head there lay on the table a sheet of paper on which there was something written in fine handwriting."</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> তার নুয়ে পড়া মাথার সামনে টেবিলে একটা কাগজ পড়ে আছে, তাতে সুন্দর হাতের লেখায় কিছু লেখা।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> ইন ফ্রন্ট অব হিজ বাউড হেড দেয়ার লে অন দ্য টেবিল আ শিট অব পেপার অন হুইচ দেয়ার ওয়াজ সামথিং রিটেন ইন ফাইন হ্যান্ডরাইটিং।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#9</div>
+            <div class="english-text">"Poor creature!" thought the banker, "he is asleep and most likely dreaming of the millions."</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> "বেচারা!" ব্যাংকার মনে মনে ভাবল, "ঘুমিয়ে আছে, আর নিশ্চয়ই মিলিয়নের স্বপ্ন দেখছে।"</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> পুওর ক্রিয়েচার! থট দ্য ব্যাংকার, হি ইজ অ্যাসলিপ অ্যান্ড মোস্ট লাইকলি ড্রিমিং অব দ্য মিলিয়নস।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#10</div>
+            <div class="english-text">"And I have only to take this half-dead man, throw him on the bed, stifle him a little with the pillow,"</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> আর আমাকে শুধু এই অর্ধমৃত লোকটাকে তুলে বিছানায় ফেলতে হবে, বালিশ দিয়ে একটু চেপে ধরতে হবে।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> অ্যান্ড আই হ্যাভ অনলি টু টেক দিস হাফ-ডেড ম্যান, থ্রো হিম অন দ্য বেড, স্টাইফেল হিম আ লিটল উইথ দ্য পিলো।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#11</div>
+            <div class="english-text">"and the most conscientious expert would find no sign of a violent death."</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> তাহলে সবচেয়ে ভালো বিশেষজ্ঞও জোর করে মারার কোনো চিহ্ন খুঁজে পাবে না।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> অ্যান্ড দ্য মোস্ট কনশেনশাস এক্সপার্ট উড ফাইন্ড নো সাইন অব আ ভায়োলেন্ট ডেথ।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#12</div>
+            <div class="english-text">"But let us first read what he has written here...."</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> কিন্তু আগে দেখি সে এখানে কী লিখেছে।"</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> বাট লেট আস ফার্স্ট রিড হোয়াট হি হ্যাজ রিটেন হিয়ার।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#13</div>
+            <div class="english-text">"The banker took the page from the table and read as follows:"</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> ব্যাংকার টেবিল থেকে কাগজটা তুলে পড়তে শুরু করল।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> দ্য ব্যাংকার টুক দ্য পেজ ফ্রম দ্য টেবিল অ্যান্ড রিড অ্যাজ ফলোস।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#14</div>
+            <div class="english-text">"To-morrow at twelve o'clock I regain my freedom and the right to associate with other men,"</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> "কাল বারোটায় আমি স্বাধীনতা ফিরে পাব আর অন্য মানুষদের সাথে মিশতে পারব।"</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> টুমরো অ্যাট টুয়েলভ ও'ক্লক আই রিগেইন মাই ফ্রিডম অ্যান্ড দ্য রাইট টু অ্যাসোশিয়েট উইথ আদার মেন।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#15</div>
+            <div class="english-text">"but before I leave this room and see the sunshine, I think it necessary to say a few words to you."</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> কিন্তু এই ঘর ছেড়ে রোদের আলো দেখার আগে তোমাকে দু-চারটে কথা বলে যেতে চাই।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> বাট বিফোর আই লিভ দিস রুম অ্যান্ড সি দ্য সানশাইন, আই থিংক ইট নেসেসারি টু সে আ ফিউ ওয়ার্ডস টু ইউ।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#16</div>
+            <div class="english-text">"With a clear conscience I tell you, as before God, who beholds me, that I despise freedom and life and health,"</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> পরিষ্কার মনে তোমাকে বলছি, ঈশ্বরকে সাক্ষী রেখে বলছি — আমি স্বাধীনতা, জীবন আর স্বাস্থ্য এসব ঘৃণা করি।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> উইথ আ ক্লিয়ার কনশেন্স আই টেল ইউ, অ্যাজ বিফোর গড, হু বিহোল্ডস মি, দ্যাট আই ডেসপাইজ ফ্রিডম অ্যান্ড লাইফ অ্যান্ড হেলথ।</div>
+        </div>
+
+        <div class="card">
+            <div class="number-badge">#17</div>
+            <div class="english-text">"and all that in your books is called the good things of the world."</div>
+            <div class="bengali-meaning"><span class="label">সহজ অর্থ:</span> আর তোমাদের বইয়ে দুনিয়ার যা কিছুকে ভালো জিনিস বলা হয় — সেসবও।</div>
+            <div class="pronunciation"><span class="label">উচ্চারণ:</span> অ্যান্ড অল দ্যাট ইন ইউর বুকস ইজ কলড দ্য গুড থিংস অব দ্য ওয়ার্ল্ড।</div>
+        </div>
+
+        <!-- Vocabulary Section -->
+        <div class="vocabulary-section">
+            <h2 class="vocab-title">📌 গুরুত্বপূর্ণ শব্দের অর্থ</h2>
+            <ul class="vocab-list">
+                <li><span class="vocab-word">Motionless (মোশনলেস)</span> = নিথর</li>
+                <li><span class="vocab-word">Skeleton (স্কেলেটন)</span> = কঙ্কাল</li>
+                <li><span class="vocab-word">Shaggy (শ্যাগি)</span> = এলোমেলো</li>
+                <li><span class="vocab-word">Hollow (হলো)</span> = ভেতরে ঢুকে যাওয়া</li>
+                <li><span class="vocab-word">Propped (প্রপড)</span> = ঠেস দিয়ে রাখা</li>
+                <li><span class="vocab-word">Emaciated (ইমেশিয়েটেড)</span> = হাড্ডিসার</li>
+                <li><span class="vocab-word">Stifle (স্টাইফেল)</span> = দমবন্ধ করা</li>
+                <li><span class="vocab-word">Conscientious (কনশেনশাস)</span> = দক্ষ ও সতর্ক</li>
+                <li><span class="vocab-word">Associate (অ্যাসোশিয়েট)</span> = মেলামেশা করা</li>
+                <li><span class="vocab-word">Despise (ডেসপাইজ)</span> = ঘৃণা করা</li>
+                <li><span class="vocab-word">Beholds (বিহোল্ডস)</span> = দেখছেন</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        function startReading() {
+            const welcome = document.getElementById('welcome-screen');
+            const mainContent = document.getElementById('main-content');
+            
+            welcome.style.opacity = '0';
+            welcome.style.transform = 'scale(1.1)';
+            
+            setTimeout(() => {
+                welcome.style.display = 'none';
+                mainContent.style.display = 'block';
+                window.scrollTo(0, 0);
+            }, 500);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1 
+            });
+
+            const elements = document.querySelectorAll('.card, .vocabulary-section');
+            elements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
